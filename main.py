@@ -84,17 +84,13 @@ Examples:
         scan_ports(args.host, args.ports, args.threads)
     
     elif args.command == "crack":
-        print(f"{Fore.GREEN}[+] Starting password cracker{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Hash: {args.hash}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Wordlist: {args.wordlist}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Type: {args.type}{Style.RESET_ALL}\n")
-        print(f"{Fore.YELLOW}[!] Password cracker coming soon...{Style.RESET_ALL}")
+        from crypto.password_tools import crack_hash
+        crack_hash(args.hash, args.wordlist, args.type)
     
     elif args.command == "log":
-        print(f"{Fore.GREEN}[+] Analyzing log file: {args.file}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Format: {args.type}{Style.RESET_ALL}\n")
-        print(f"{Fore.YELLOW}[!] Log analyzer coming soon...{Style.RESET_ALL}")
-    
+        from monitor.log_analyzer import analyze_log
+        analyze_log(args.file, args.type)
+
     elif args.command == "monitor":
         print(f"{Fore.GREEN}[+] File integrity monitor{Style.RESET_ALL}")
         print(f"{Fore.CYAN}[*] Directory: {args.dir}{Style.RESET_ALL}")
