@@ -74,11 +74,11 @@ Examples:
         if args.type in ["xss", "all"]:
             from scanner.xss import scan_url
             scan_url(args.url)
+
+    if args.type in ["sqli", "all"]:
+            from scanner.sqli import scan_sqli
+            scan_sqli(args.url)
         
-        if args.type in ["sqli", "all"]:
-            print(f"{Fore.YELLOW}[!] SQLi scanner coming soon...{Style.RESET_ALL}")
-            # from scanner.sqli import scan_sqli
-            # scan_sqli(args.url)
     
     elif args.command == "port":
         print(f"{Fore.GREEN}[+] Starting port scan on: {args.host}{Style.RESET_ALL}")
