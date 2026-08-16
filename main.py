@@ -33,60 +33,55 @@ Examples:
     
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     
-    # ====================
+    # ==================== وب اسکنر ====================
     web_parser = subparsers.add_parser("web", help="Web vulnerability scanner (XSS, SQLi, etc)")
     web_parser.add_argument("--url", required=True, help="Target URL to scan")
     web_parser.add_argument("--type", default="xss", choices=["xss", "sqli", "all"], 
                            help="Type of scan (default: xss)")
     
-    # ==================== 
+    # ==================== پورت اسکنر ====================
     port_parser = subparsers.add_parser("port", help="Advanced port scanner")
     port_parser.add_argument("--host", required=True, help="Target host (IP or domain)")
     port_parser.add_argument("--ports", default="1-1024", help="Port range (e.g., 1-1000 or 80,443,8080)")
     port_parser.add_argument("--threads", type=int, default=100, help="Number of threads (default: 100)")
     
-    # ====================
+    # ==================== کرکر پسورد ====================
     crack_parser = subparsers.add_parser("crack", help="Password hash cracker")
     crack_parser.add_argument("--hash", required=True, help="Hash to crack (MD5, SHA1, SHA256)")
     crack_parser.add_argument("--wordlist", required=True, help="Path to wordlist file")
     crack_parser.add_argument("--type", default="md5", choices=["md5", "sha1", "sha256"], 
                              help="Hash type (default: md5)")
     
-    # ==================== 
+    # ==================== لاگ آنالایزر ====================
     log_parser = subparsers.add_parser("log", help="Analyze log files for attacks")
     log_parser.add_argument("--file", required=True, help="Path to log file (Apache/Nginx format)")
     log_parser.add_argument("--type", default="apache", choices=["apache", "nginx"], 
                            help="Log format (default: apache)")
     
-    # ==================== 
+    # ==================== مانیتور یکپارچگی ====================
     monitor_parser = subparsers.add_parser("monitor", help="File integrity monitor")
     monitor_parser.add_argument("--dir", required=True, help="Directory to monitor")
     monitor_parser.add_argument("--init", action="store_true", help="Initialize baseline hashes")
     
     args = parser.parse_args()
     
-    # ==================== 
+    # ==================== اجرای دستورات ====================
     
     if args.command == "web":
         print(f"{Fore.GREEN}[+] Starting web scan on: {args.url}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}[*] Scan type: {args.type}{Style.RESET_ALL}\n")
         
-        if args.type in ["xss", "all"]:
+        if args.type == "xss" or args.type == "all":
             from scanner.xss import scan_url
             scan_url(args.url)
-
-    if args.type in ["sqli", "all"]:
+        
+        if args.type == "sqli" or args.type == "all":
             from scanner.sqli import scan_sqli
             scan_sqli(args.url)
-        
     
     elif args.command == "port":
-        print(f"{Fore.GREEN}[+] Starting port scan on: {args.host}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Ports: {args.ports}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}[*] Threads: {args.threads}{Style.RESET_ALL}\n")
-        print(f"{Fore.YELLOW}[!] Port scanner coming soon...{Style.RESET_ALL}")
-        # from network.port_scanner import scan_ports
-        # scan_ports(args.host, args.ports, args.threads)
+        from network.port_scanner import scan_ports
+        scan_ports(args.host, args.ports, args.threads)
     
     elif args.command == "crack":
         print(f"{Fore.GREEN}[+] Starting password cracker{Style.RESET_ALL}")
@@ -94,15 +89,11 @@ Examples:
         print(f"{Fore.CYAN}[*] Wordlist: {args.wordlist}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}[*] Type: {args.type}{Style.RESET_ALL}\n")
         print(f"{Fore.YELLOW}[!] Password cracker coming soon...{Style.RESET_ALL}")
-        # from crypto.password_tools import crack_hash
-        # crack_hash(args.hash, args.wordlist, args.type)
     
     elif args.command == "log":
         print(f"{Fore.GREEN}[+] Analyzing log file: {args.file}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}[*] Format: {args.type}{Style.RESET_ALL}\n")
         print(f"{Fore.YELLOW}[!] Log analyzer coming soon...{Style.RESET_ALL}")
-        # from monitor.log_analyzer import analyze_log
-        # analyze_log(args.file, args.type)
     
     elif args.command == "monitor":
         print(f"{Fore.GREEN}[+] File integrity monitor{Style.RESET_ALL}")
@@ -110,9 +101,6 @@ Examples:
         if args.init:
             print(f"{Fore.CYAN}[*] Initializing baseline...{Style.RESET_ALL}")
         print(f"{Fore.YELLOW}[!] Integrity monitor coming soon...{Style.RESET_ALL}")
-        # from monitor.file_integrity import init_monitor, check_integrity
-        # if args.init: init_monitor(args.dir)
-        # else: check_integrity(args.dir)
     
     else:
         parser.print_help()
