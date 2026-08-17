@@ -10,7 +10,6 @@ from colorama import Fore, Style
 import time
 from datetime import datetime
 
-# پورت‌های معروف
 COMMON_PORTS = {
     20: 'FTP-data',
     21: 'FTP',
